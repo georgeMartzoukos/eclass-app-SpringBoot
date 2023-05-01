@@ -13,3 +13,28 @@ The TeacherController includes four endpoints:
 "/api/teachers/{id}": GET endpoint for retrieving a teacher by their id. It accepts the id as a path variable, and returns a TeacherDTO object in the response body, along with an OK (200) HTTP status code. If the teacher is not found, it returns a NOT_FOUND (404) status code.
 "/api/teachers/{id}": DELETE endpoint for deleting a teacher by their id. It accepts the id as a path variable, and returns a ResponseEntity with a String message in the response body, along with an OK (200) HTTP status code. If the teacher is not found, it returns a NOT_FOUND (404) status code.
 "/api/teachers/": POST endpoint for adding a new teacher. It accepts a JSON payload in the request body in the form of a TeacherDTO object, and returns a ResponseEntity with the same object in the response body, along with a CREATED HTTP status code (201). If the teacher already exists, it returns a BAD_REQUEST (400) status code.
+
+GET /users: This endpoint retrieves a list of all users in the system. The response is an array of JSON objects, where each object represents a user. Each user object contains the following fields:
+
+id: A unique identifier for the user.
+username: The user's username.
+email: The user's email address.
+created_at: The date and time that the user was created, in ISO 8601 format.
+updated_at: The date and time that the user was last updated, in ISO 8601 format.
+GET /users/:id: This endpoint retrieves information about a specific user, based on their ID. The response is a JSON object that represents the user. The user object contains the same fields as the objects returned by the GET /users endpoint.
+
+POST /users: This endpoint creates a new user in the system. The request body should be a JSON object that contains the following fields:
+
+username: The user's desired username.
+email: The user's email address.
+password: The user's desired password.
+The response is a JSON object that represents the newly created user. The user object contains the same fields as the objects returned by the GET /users endpoint.
+
+PUT /users/:id: This endpoint updates information about a specific user, based on their ID. The request body should be a JSON object that contains one or more of the following fields:
+
+username: The user's new username.
+email: The user's new email address.
+password: The user's new password.
+The response is a JSON object that represents the updated user. The user object contains the same fields as the objects returned by the GET /users endpoint.
+
+DELETE /users/:id: This endpoint deletes a specific user from the system, based on their ID. The response is an empty JSON object.
