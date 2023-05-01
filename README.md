@@ -1,6 +1,6 @@
 # eclass-app-SpringBoot
 
-This is a Java Spring Boot REST API for managing teachers and students of an e-learning platform. The API includes two controllers, one for managing students and one for managing teachers.
+This is a Java Spring Boot REST API for managing teachers and students of an e-learning platform. The API includes three controllers, one for managing students and one for managing teachers.
 
 The StudentController includes three endpoints:
 
