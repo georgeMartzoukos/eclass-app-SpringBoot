@@ -2,8 +2,12 @@ package gr.aueb.cf.eclassapp.rest;
 
 import gr.aueb.cf.eclassapp.dto.CourseDTO;
 import gr.aueb.cf.eclassapp.dto.StudentDTO;
+import gr.aueb.cf.eclassapp.dto.ExamDTO;
+import gr.aueb.cf.eclassapp.dto.TeacherDTO;
 import gr.aueb.cf.eclassapp.model.Course;
 import gr.aueb.cf.eclassapp.model.Student;
+import gr.aueb.cf.eclassapp.model.Teacher;
+import gr.aueb.cf.eclassapp.service.ICourseService;
 import gr.aueb.cf.eclassapp.service.IStudentService;
 import gr.aueb.cf.eclassapp.service.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.eclassapp.service.exceptions.EntityNotFoundException;
@@ -20,9 +24,26 @@ import java.util.List;
 public class StudentController {
 
     private final IStudentService studentService;
+    private final ICourseService courseService;
     @Autowired
-    public StudentController(IStudentService studentService) {
+    public StudentController(IStudentService studentService, ICourseService courseService) {
         this.studentService = studentService;
+        this.courseService = courseService;
+    }
+
+    @RequestMapping(path ="/", method = RequestMethod.GET)
+    public ResponseEntity<List<StudentDTO>> getTeachersByLastname(@RequestParam("lastname") String lastname) {
+        List<Student> students;
+        try {
+            students = studentService.getStudentsByLastname(lastname);
+            List<StudentDTO> studentDTO = new ArrayList<>();
+            for (Student student : students) {
+                studentDTO.add(new StudentDTO((student.getId()), student.getFirstname(), student.getLastname()));
+            }
+            return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(path = "/", method = RequestMethod.POST)
@@ -66,6 +87,8 @@ public class StudentController {
         }
 
     }
+
+
 
 
     private StudentDTO mapStudent(Student student) {

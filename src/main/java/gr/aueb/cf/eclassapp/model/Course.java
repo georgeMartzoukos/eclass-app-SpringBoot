@@ -32,7 +32,6 @@ public class Course {
                 inverseJoinColumns = @JoinColumn(name = "STUDENT_ID", referencedColumnName =  "ID"))
     private List<Student> students = new ArrayList<>();
 
-
     public void addStudent(Student student) {
         this.students.add(student);
         for (Course course : student.getCourses()) {
@@ -55,4 +54,8 @@ public class Course {
         }
         if (found) student.deleteCourse(this);
     }
+
+    @OneToMany(mappedBy = "course")
+    private List<Exam> exams = new ArrayList<>();
+
 }

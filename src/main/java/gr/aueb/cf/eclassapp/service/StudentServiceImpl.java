@@ -1,9 +1,12 @@
 package gr.aueb.cf.eclassapp.service;
 
+import gr.aueb.cf.eclassapp.dto.ExamDTO;
 import gr.aueb.cf.eclassapp.dto.StudentDTO;
 import gr.aueb.cf.eclassapp.model.Course;
+import gr.aueb.cf.eclassapp.model.Exam;
 import gr.aueb.cf.eclassapp.model.Student;
 import gr.aueb.cf.eclassapp.repository.CourseRepository;
+import gr.aueb.cf.eclassapp.repository.ExamRepository;
 import gr.aueb.cf.eclassapp.repository.StudentRepository;
 import gr.aueb.cf.eclassapp.service.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.eclassapp.service.exceptions.EntityNotFoundException;
@@ -17,10 +20,12 @@ public class StudentServiceImpl implements IStudentService{
 
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
+    private final ExamRepository examRepository;
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, CourseRepository courseRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, CourseRepository courseRepository, ExamRepository examRepository) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
+        this.examRepository = examRepository;
     }
 
     @Override
@@ -64,6 +69,18 @@ public class StudentServiceImpl implements IStudentService{
         if (course == null) throw new EntityNotFoundException(Course.class, courseId);
 
         student.addCourse(course);
+        studentRepository.save(student);
+    }
+    @Override
+    public void addExam(ExamDTO examDTO) throws EntityNotFoundException , EntityAlreadyExistsException {
+        Student student = studentRepository.findStudentById(examDTO.getStudentId());
+        if (student == null) throw new EntityNotFoundException(Student.class, examDTO.getStudentId());
+        Course course = courseRepository.findCourseById(examDTO.getCourseId());
+        if (course == null) throw new EntityNotFoundException(Course.class, examDTO.getCourseId());
+
+        Exam exam = new Exam(student, course, examDTO.getGrade());
+        examRepository.save(exam);
+        student.addExam(exam);
         studentRepository.save(student);
     }
 

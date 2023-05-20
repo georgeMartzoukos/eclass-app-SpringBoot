@@ -1,6 +1,7 @@
 package gr.aueb.cf.eclassapp.service;
 
 import gr.aueb.cf.eclassapp.dto.CourseDTO;
+import gr.aueb.cf.eclassapp.dto.ExamDTO;
 import gr.aueb.cf.eclassapp.dto.StudentDTO;
 import gr.aueb.cf.eclassapp.dto.TeacherDTO;
 import gr.aueb.cf.eclassapp.model.Course;
@@ -20,4 +21,5 @@ public interface IStudentService {
     void addCourse(Long courseId, Long studentId) throws EntityNotFoundException, EntityAlreadyExistsException;
 
     List<Course> getStudentCourses(Long id) throws EntityNotFoundException;
+    void addExam(ExamDTO examDTO) throws EntityNotFoundException , EntityAlreadyExistsException;
 }
