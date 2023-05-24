@@ -15,6 +15,7 @@ import java.util.List;
 public interface IStudentService {
     Student insertStudent(StudentDTO studentDTO) throws EntityAlreadyExistsException;
     Student updateStudent(StudentDTO studentDTO) throws EntityNotFoundException;
+    List<Student> getAllStudents() throws EntityNotFoundException;
     void deleteStudent(Long id) throws EntityNotFoundException;
     List<Student> getStudentsByLastname(String lastname) throws EntityNotFoundException;
     Student getStudentById(Long id) throws EntityNotFoundException;

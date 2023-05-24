@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IExamService {
     List<Exam> getExamsOfStudent(Long studentId) throws EntityNotFoundException;
+    List<Exam> getExamsOfCourse(Long courseId) throws EntityNotFoundException;
 }

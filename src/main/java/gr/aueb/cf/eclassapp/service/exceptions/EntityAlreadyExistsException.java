@@ -6,4 +6,8 @@ public class EntityAlreadyExistsException extends Exception{
     public EntityAlreadyExistsException(Class<?> entityClass, Long id) {
         super("Entity " + entityClass.getSimpleName() + " with id " + id + " already exist");
     }
+
+    public EntityAlreadyExistsException(Class<?> entityClass) {
+        super("Entity " + entityClass.getSimpleName() +  " already exist");
+    }
 }

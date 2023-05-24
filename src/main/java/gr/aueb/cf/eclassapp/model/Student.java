@@ -28,11 +28,11 @@ public class Student {
     @ToString.Exclude
     private String lastname;
 
-    public Student(Long id, String firstname, String lastname, List<Course> courses) {
+    public Student(Long id, String firstname, String lastname) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.courses = courses;
+
     }
 
     @ManyToMany

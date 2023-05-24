@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,9 +22,17 @@ public class Teacher {
     @Column(name = "LASTNAME")
     private String lastname;
 
+    @OneToMany(mappedBy = "teacher")
+    private List<Course> courses = new ArrayList<>();
+
     public Teacher(Long id, String firstname, String lastname) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
+    }
+
+    public void addCourse(Course course) {
+        this.courses.add(course);
+        course.setTeacher(this);
     }
 }

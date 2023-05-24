@@ -1,6 +1,8 @@
 package gr.aueb.cf.eclassapp.rest;
 
+import gr.aueb.cf.eclassapp.dto.CourseDTO;
 import gr.aueb.cf.eclassapp.dto.TeacherDTO;
+import gr.aueb.cf.eclassapp.model.Course;
 import gr.aueb.cf.eclassapp.model.Teacher;
 import gr.aueb.cf.eclassapp.service.ITeacherService;
 import gr.aueb.cf.eclassapp.service.exceptions.EntityAlreadyExistsException;
@@ -49,6 +51,47 @@ public class TeacherController {
 
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(path ="/teachers/getAll", method = RequestMethod.GET)
+    public ResponseEntity<List<TeacherDTO>> getTeachersByLastname() {
+        List<Teacher> teachers;
+        try {
+            teachers = teacherService.getAllTeachers();
+            List<TeacherDTO> teachersDTO = new ArrayList<>();
+            for (Teacher teacher : teachers) {
+                teachersDTO.add(new TeacherDTO((teacher.getId()), teacher.getFirstname(), teacher.getLastname()));
+            }
+            return new ResponseEntity<>(teachersDTO, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(path = "teachers/getCourses/{teacherId}", method = RequestMethod.GET)
+    public ResponseEntity<List<CourseDTO>> getCoursesOfTeacher(@PathVariable("teacherId") Long teacherId) {
+        List<Course> courses;
+        List<CourseDTO> coursesDTO = new ArrayList<>();
+        try {
+            courses = teacherService.getTeacherCourses(teacherId);
+            for (Course course : courses) {
+                CourseDTO courseDTO = new CourseDTO(course.getId(), course.getTitle(), course.getDescription());
+                coursesDTO.add(courseDTO);
+            }
+            return new ResponseEntity<>(coursesDTO, HttpStatus.OK);
+        }catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(path = "/teachers/addCourse/{teacherId}/{courseId}", method = RequestMethod.POST)
+    public ResponseEntity<String> addCourseToTeacher(@PathVariable("teacherId") Long teacherId, @PathVariable("courseId") Long courseId) {
+        try {
+            teacherService.addCourseToTeacher(teacherId, courseId);
+            return new ResponseEntity<>("Course added succesfully", HttpStatus.OK);
+        } catch (EntityNotFoundException | EntityAlreadyExistsException e) {
+            return new ResponseEntity<>("This course is taken by this or an other teacher",HttpStatus.BAD_REQUEST);
         }
     }
 

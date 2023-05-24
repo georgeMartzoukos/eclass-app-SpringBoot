@@ -22,7 +22,9 @@ public class CourseServiceImpl implements ICourseService{
 
     @Override
     public Course insertCourse(CourseDTO courseDTO) throws EntityAlreadyExistsException {
-        return courseRepository.save(mapToCourse(courseDTO));
+        Course course = mapToCourse(courseDTO);
+        if (courseRepository.findCourseByTitle(course.getTitle()) != null) throw new EntityAlreadyExistsException(Course.class);
+        return courseRepository.save(course);
     }
 
     @Override

@@ -41,6 +41,13 @@ public class StudentServiceImpl implements IStudentService{
     }
 
     @Override
+    public List<Student> getAllStudents() throws EntityNotFoundException {
+        List<Student> students = studentRepository.findAll();
+        if(students == null) throw new EntityNotFoundException(Student.class);
+        return students;
+    }
+
+    @Override
     public void deleteStudent(Long id) throws EntityNotFoundException {
         studentRepository.deleteById(id);
     }

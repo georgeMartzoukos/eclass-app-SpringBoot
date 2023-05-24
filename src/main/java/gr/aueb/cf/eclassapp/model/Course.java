@@ -27,6 +27,10 @@ public class Course {
         this.description = description;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEACHER_ID")
+    private Teacher teacher;
+
     @ManyToMany
     @JoinTable(name = "COURSES_STUDENTS", joinColumns =  @JoinColumn(name = "COURSES_ID", referencedColumnName = "ID"),
                 inverseJoinColumns = @JoinColumn(name = "STUDENT_ID", referencedColumnName =  "ID"))
@@ -57,5 +61,6 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     private List<Exam> exams = new ArrayList<>();
+
 
 }

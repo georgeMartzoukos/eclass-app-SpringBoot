@@ -9,5 +9,7 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findByTitleStartingWith(String Title);
 
+    List<Course> findCourseByTitle(String title);
+
     Course findCourseById(Long id);
 }

@@ -52,7 +52,23 @@ public class ExamController {
         try {
             exams = examService.getExamsOfStudent(studentId);
             for (Exam exam : exams) {
-                ExamDTO examDTO = new ExamDTO(exam.getId(),exam.getStudent().getId(), exam.getCourse().getId(),exam.getGrade());
+                ExamDTO examDTO = new ExamDTO(exam.getId(),exam.getStudent().getId(),exam.getStudent().getLastname(), exam.getCourse().getId(), exam.getCourse().getTitle(),exam.getGrade());
+                examsDTO.add(examDTO);
+            }
+            return new ResponseEntity<>(examsDTO, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(path = "/course/{courseId}", method = RequestMethod.GET)
+    public ResponseEntity<List<ExamDTO>> getExamsByCourseId(@PathVariable ("courseId") Long courseId) {
+        List<Exam> exams;
+        List<ExamDTO> examsDTO = new ArrayList<>();
+        try {
+            exams = examService.getExamsOfCourse(courseId);
+            for (Exam exam : exams) {
+                ExamDTO examDTO = new ExamDTO(exam.getId(),exam.getStudent().getId(),exam.getStudent().getLastname(), exam.getCourse().getId(), exam.getCourse().getTitle(),exam.getGrade());
                 examsDTO.add(examDTO);
             }
             return new ResponseEntity<>(examsDTO, HttpStatus.OK);

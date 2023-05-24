@@ -32,7 +32,7 @@ public class StudentController {
     }
 
     @RequestMapping(path ="/", method = RequestMethod.GET)
-    public ResponseEntity<List<StudentDTO>> getTeachersByLastname(@RequestParam("lastname") String lastname) {
+    public ResponseEntity<List<StudentDTO>> getStudentByLastname(@RequestParam("lastname") String lastname) {
         List<Student> students;
         try {
             students = studentService.getStudentsByLastname(lastname);
@@ -44,6 +44,22 @@ public class StudentController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @RequestMapping(path = "/getAll", method = RequestMethod.GET)
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+        List<Student> students;
+        try {
+            students = studentService.getAllStudents();
+            List<StudentDTO> studentDTO = new ArrayList<>();
+            for (Student student : students) {
+                studentDTO.add(new StudentDTO((student.getId()), student.getFirstname(), student.getLastname()));
+            }
+            return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @RequestMapping(path = "/", method = RequestMethod.POST)
